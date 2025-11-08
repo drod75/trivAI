@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, Form, File
 from backend.models import QuizResponse, QuizRequest
 from backend.agent import quiz_generator_chain
 
@@ -23,7 +23,8 @@ async def generate_quiz(request: QuizRequest):
         result = await quiz_generator_chain.ainvoke({
             "prompt": request.prompt,
             "num_questions": request.num_questions,
-            "difficulty": request.difficulty
+            "difficulty": request.difficulty,
+            "file_data": "none"
         })
 
         return result
@@ -35,14 +36,30 @@ async def generate_quiz(request: QuizRequest):
             detail=f"Quiz generation failed due to an internal error. Ensure the API key is valid. Details: {e}"
         )
 
-if __name__ == '__main__':
-    prompt = "Give me questions of New York!"
-    num_questions = 3
-    difficulty = "Hard"
+@app.post("/generate-quiz-file/", response_model=QuizResponse, summary="Generate a quiz using Gemini AI")
+async def generate_quiz_file(
+    prompt: str = Form(...),
+    num_questions: int = Form(...),
+    difficulty: str = Form(...),
+    file: UploadFile = File(...)
+):
+    """
+    Returns questions based on user input!
+    """
+    try:
+        file_content = await file.read()
+        result = await quiz_generator_chain.ainvoke({
+            "prompt": prompt,
+            "num_questions": num_questions,
+            "difficulty": difficulty,
+            "file_data": file_content.decode("utf-8")
+        })
 
-    answer = quiz_generator_chain.invoke({
-        "prompt": prompt,
-        "num_questions": num_questions,
-        "difficulty": difficulty
-    })
-    print(answer)
+        return result
+
+    except Exception as e:
+        print(f"Error during quiz generation: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Quiz generation with Data failed due to an internal error. Ensure the API key is valid. Details: {e}"
+        )
