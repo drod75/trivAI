@@ -1,26 +1,50 @@
 from fastapi import FastAPI, HTTPException, UploadFile, Form, File
 from backend.models import QuizResponse, QuizRequest
-from backend.agent import quiz_generator_chain
+from backend.agent import quiz_generation_chain
 
 app = FastAPI(title="AI Kahoot")
 
 @app.get("/")
 def status():
+    """
+    Check the status of the API.
+
+    Returns
+    -------
+    dict
+        A dictionary with the status of the API.
+    """
     try:
         return {"Status": "Site is working good!"}
     except:
         raise HTTPException(
             status_code=404,
-            detail="Site not working :("
+            detail="API is not reachable."
         )
 
 @app.post("/generate-quiz/", response_model=QuizResponse, summary="Generate a quiz using Gemini AI")
 async def generate_quiz(request: QuizRequest):
     """
-    Returns questions based on user input!
+    Generate a quiz based on user input.
+
+    Parameters
+    ----------
+    request : QuizRequest
+        The request body containing the prompt, number of questions, and difficulty.
+
+    Returns
+    -------
+    QuizResponse
+        The generated quiz.
+
+    Raises
+    ------
+    HTTPException
+        If the quiz generation fails.
     """
     try:
-        result = await quiz_generator_chain.ainvoke({
+        # This endpoint does not handle file uploads, so file_data is set to "none".
+        result = await quiz_generation_chain.ainvoke({
             "prompt": request.prompt,
             "num_questions": request.num_questions,
             "difficulty": request.difficulty,
@@ -33,7 +57,7 @@ async def generate_quiz(request: QuizRequest):
         print(f"Error during quiz generation: {e}")
         raise HTTPException(
             status_code=500,
-            detail=f"Quiz generation failed due to an internal error. Ensure the API key is valid. Details: {e}"
+            detail=f"An unexpected error occurred during quiz generation. Please check the logs for more details."
         )
 
 @app.post("/generate-quiz-file/", response_model=QuizResponse, summary="Generate a quiz using Gemini AI")
@@ -44,22 +68,51 @@ async def generate_quiz_file(
     file: UploadFile = File(...)
 ):
     """
-    Returns questions based on user input!
+    Generate a quiz based on user input and a file.
+
+    Parameters
+    ----------
+    prompt : str
+        The prompt for the quiz.
+    num_questions : int
+        The number of questions to generate.
+    difficulty : str
+        The difficulty of the quiz.
+    file : UploadFile
+        The file to use for generating the quiz.
+
+    Returns
+    -------
+    QuizResponse
+        The generated quiz.
+
+    Raises
+    ------
+    HTTPException
+        If the quiz generation fails.
     """
     try:
-        file_content = await file.read()
-        result = await quiz_generator_chain.ainvoke({
+        file_content_bytes = await file.read()
+        try:
+            file_content = file_content_bytes.decode("utf-8")
+        except UnicodeDecodeError:
+            raise HTTPException(
+                status_code=400,
+                detail="Failed to decode the uploaded file. Please ensure it is a valid UTF-8 encoded text file."
+            )
+
+        result = await quiz_generation_chain.ainvoke({
             "prompt": prompt,
             "num_questions": num_questions,
             "difficulty": difficulty,
-            "file_data": file_content.decode("utf-8")
+            "file_data": file_content
         })
 
         return result
 
     except Exception as e:
-        print(f"Error during quiz generation: {e}")
+        print(f"Error during quiz generation with file: {e}")
         raise HTTPException(
             status_code=500,
-            detail=f"Quiz generation with Data failed due to an internal error. Ensure the API key is valid. Details: {e}"
+            detail=f"An unexpected error occurred during quiz generation with the provided file. Please check the logs for more details."
         )
