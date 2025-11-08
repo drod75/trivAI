@@ -38,6 +38,7 @@ QUIZ_GENERATOR_PROMPT = ChatPromptTemplate.from_messages(
               seamlessly blend with on another.
             - Provide 2 or 4 distinct choices for each question (2 for true/false, 4 for multiple choice).
             - Keep the questions concise and easy to read.
+            - There has to be an answer, and it must be one of the choices provided.
             - Abide by these rules, and most importantly, have fun!
 
             For output restraints:
