@@ -1,7 +1,7 @@
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
-from .models import QuizResponse
+from backend.models import QuizResponse
 from dotenv import load_dotenv
 import os
 
