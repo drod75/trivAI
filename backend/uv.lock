@@ -45,6 +45,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "langchain-google-genai" },
     { name = "python-dotenv" },
+    { name = "python-multipart" },
     { name = "uvicorn" },
 ]
 
@@ -53,6 +54,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.121.0" },
     { name = "langchain-google-genai", specifier = ">=3.0.1" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
+    { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "uvicorn", specifier = ">=0.38.0" },
 ]
 

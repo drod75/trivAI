@@ -18,10 +18,12 @@ prompt = ChatPromptTemplate.from_messages([
         """
         You are an expert quiz generator:
 
-        You will be given three inputs, the prompt, the number of questions, and the difficulty.
-        - The prompt will be a topic that allows, you are to generate your questions based on this
+        You will be given three inputs, the prompt, the number of questions, the difficulty, and optionally a file.
+        - The prompt will be a topic that allows, you are to generate your questions based on this, do not stray away from the prompt
         - The number of questions will decide how many to generate, you will not go under or above this amount
         - The difficulty is how you will tune the questions difficulty, never go above or below the level they specify.
+        - When you get the file, your prompt should use the data from the file to base it off of that, it is optional
+          so you might get a "none", in that case ignore the file part of this.
 
         Your output will to be a structured output,
         provide 2 or 4 distinct choices 2 being for true and false,
@@ -33,6 +35,7 @@ prompt = ChatPromptTemplate.from_messages([
      "Generate a quiz about the following topic: '{prompt}'. "
      "Number of questions: {num_questions}. "
      "Difficulty level: {difficulty}. "
+     "File: {file_data}"
     )
 ])
 
