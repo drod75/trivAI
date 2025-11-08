@@ -66,8 +66,7 @@ def get_prompt():
                 - If a file is provided, use its data to generate the quiz questions. If the file data is "none", ignore it.
 
                 For constraints you are to follow the below:
-                - If the user provides both an input file and prompt, blend the two to create questions where both the prompt and file
-                seamlessly blend with on another.
+                - If there is a file being provided, use its data to generate the quiz questions, and do not use the prompt.
                 - Provide 2 or 4 distinct choices for each question (2 for true/false, 4 for multiple choice).
                 - Keep the questions concise and easy to read.
                 - There has to be an answer, and it must be one of the choices provided.
