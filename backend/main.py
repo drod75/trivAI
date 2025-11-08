@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException, UploadFile, Form, File
 from fastapi.middleware.cors import CORSMiddleware
 from backend.models import QuizResponse, QuizRequest
-from backend.agent import quiz_generation_chain
+from backend.agent import get_chain
 
-app = FastAPI(title="AI Kahoot")
+app = FastAPI(title="AI Kahoot", description="Generate quizzes using Gemini AI!")
+quiz_llm = get_chain()
 
 origins = [
     "http://localhost",
@@ -58,7 +59,7 @@ async def generate_quiz(request: QuizRequest):
     """
     try:
         # This endpoint does not handle file uploads, so file_data is set to "none".
-        result = await quiz_generation_chain.ainvoke({
+        result = await quiz_llm.ainvoke({
             "prompt": request.prompt,
             "num_questions": request.num_questions,
             "difficulty": request.difficulty,
@@ -115,7 +116,7 @@ async def generate_quiz_file(
                 detail="Failed to decode the uploaded file. Please ensure it is a valid UTF-8 encoded text file."
             )
 
-        result = await quiz_generation_chain.ainvoke({
+        result = await quiz_llm.ainvoke({
             "prompt": prompt,
             "num_questions": num_questions,
             "difficulty": difficulty,
