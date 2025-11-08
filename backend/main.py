@@ -14,7 +14,7 @@ def status():
             detail="Site not working :("
         )
 
-@app.get("/generate-quiz/", response_model=QuizResponse, summary="Generate a quiz using Gemini AI")
+@app.post("/generate-quiz/", response_model=QuizResponse, summary="Generate a quiz using Gemini AI")
 async def generate_quiz(request: QuizRequest):
     """
     Returns questions based on user input!

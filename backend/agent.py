@@ -23,7 +23,10 @@ prompt = ChatPromptTemplate.from_messages([
         - The number of questions will decide how many to generate, you will not go under or above this amount
         - The difficulty is how you will tune the questions difficulty, never go above or below the level they specify.
 
-        Your output is going to be a structured output, for each question, provide 2 or 4 distinct choices.", abide by these rules, and most importantly, have fun!
+        Your output will to be a structured output,
+        provide 2 or 4 distinct choices 2 being for true and false,
+        make the questions not to long, make them simple and quick to read,
+        abide by these rules, and most importantly, have fun!
         """
     ),
     ("user",
