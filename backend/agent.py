@@ -1,3 +1,11 @@
+"""
+This module initializes and configures the quiz generation agent.
+
+It includes functions to:
+- Initialize the Google Generative AI model.
+- Define the prompt template for the quiz generator.
+- Create the quiz generation chain by piping the prompt to the LLM.
+"""
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -8,7 +16,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Initialize the Google Generative AI model
-def get_gemini():
+def get_gemini() -> ChatGoogleGenerativeAI:
+    """
+    Initializes and returns a ChatGoogleGenerativeAI instance.
+
+    This function configures the model with specific parameters for the quiz generation task.
+    It uses the "gemini-2.5-flash" model, sets a timeout, retrieves the API key from environment variables,
+    and sets the temperature for controlling the creativity of the responses.
+
+    Returns:
+        ChatGoogleGenerativeAI: An instance of the ChatGoogleGenerativeAI class.
+    """
     GEMINI_LLM = ChatGoogleGenerativeAI(
         model="gemini-2.5-flash",
         timeout=45,
@@ -20,6 +38,16 @@ def get_gemini():
 
 # Define the prompt template for the quiz generator
 def get_prompt():
+    """
+    Defines and returns the prompt template for the quiz generator.
+
+    The prompt template is designed to guide the language model in creating a quiz.
+    It includes a system message that sets the context and rules for the quiz generation,
+    and a user message that provides the specific details for the quiz to be generated.
+
+    Returns:
+        ChatPromptTemplate: An instance of the ChatPromptTemplate class.
+    """
     QUIZ_GENERATOR_PROMPT = ChatPromptTemplate.from_messages(
         [
             (
@@ -63,6 +91,18 @@ def get_prompt():
 
 # Create the quiz generation chain by piping the prompt to the LLM
 def get_chain():
+    """
+    Creates and returns the quiz generation chain.
+
+    This function assembles the quiz generation chain by:
+    1. Initializing the Gemini LLM.
+    2. Configuring the LLM for structured output using the QuizResponse model.
+    3. Retrieving the prompt template.
+    4. Piping the prompt template to the structured LLM.
+
+    Returns:
+        A chain of Runnables that takes a dictionary of inputs and returns a QuizResponse.
+    """
     GEMINI_LLM = get_gemini()
     STRUCTURED_GEMINI = GEMINI_LLM.with_structured_output(QuizResponse)
     QUIZ_GENERATOR_PROMPT = get_prompt()
