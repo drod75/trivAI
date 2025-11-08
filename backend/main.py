@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException
-from .models import QuizResponse, QuizRequest
-from .agent import quiz_generator_chain
+from backend.models import QuizResponse, QuizRequest
+from backend.agent import quiz_generator_chain
 
 app = FastAPI(title="AI Kahoot")
 
-@app.post("/")
+@app.get("/")
 def status():
     try:
         return {"Status": "Site is working good!"}
@@ -14,8 +14,7 @@ def status():
             detail="Site not working :("
         )
 
-# API Endpoint
-@app.post("/generate-quiz/", response_model=QuizResponse, summary="Generate a quiz using Gemini AI")
+@app.get("/generate-quiz/", response_model=QuizResponse, summary="Generate a quiz using Gemini AI")
 async def generate_quiz(request: QuizRequest):
     """
     Returns questions based on user input!
