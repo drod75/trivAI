@@ -1,8 +1,22 @@
 from fastapi import FastAPI, HTTPException, UploadFile, Form, File
+from fastapi.middleware.cors import CORSMiddleware
 from backend.models import QuizResponse, QuizRequest
 from backend.agent import quiz_generation_chain
 
 app = FastAPI(title="AI Kahoot")
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def status():
