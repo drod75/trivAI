@@ -51,13 +51,13 @@
 
 ## About The Project
 
-[![TrivAI Screen Shot][product-screenshot]](https://github.com/drod75/trivAI)
-
 **TrivAI** is a submission for [SBU Hacks](https://hack.sbcs.io/), a hackathon hosted by the Stony Brook Computing Society.
 
 This project is a Kahoot clone powered by generative AI. It showcases how artificial intelligence can revolutionize the creation and scaling of applications, challenging the often high costs of popular platforms. By simply providing a topic, TrivAI instantly generates a unique and engaging trivia game, demonstrating a new paradigm for accessible and dynamic educational technology.
 
 Our goal is to highlight the potential of AI to democratize software development and combat unfair pricing in the market.
+
+Our site is here! [trivAI](https://triviakahoot.me/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -137,11 +137,10 @@ Open your browser and navigate to `http://localhost:3000` to see the application
 
 A video demonstration will be available here soon. Stay tuned!
 
+[Youtube Video Demo]()
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## System Diagram
-
-A diagram illustrating the system architecture will be added here shortly.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
