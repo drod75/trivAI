@@ -137,10 +137,7 @@ Open your browser and navigate to `http://localhost:3000` to see the application
 
 A video demonstration will be available here soon. Stay tuned!
 
-[Youtube Video Demo]()
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+[Youtube Video Demo](https://youtu.be/CeCjq_sqY_g)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
